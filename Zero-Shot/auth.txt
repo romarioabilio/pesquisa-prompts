@@ -10950,12 +10950,6 @@ workflows:
 ## OBJETIVO
 Gere um arquivo de teste Cypress funcional com 7 cenários de autenticação para Real World App.
 
-## CONTEXTO TÉCNICO
-- Cypress v4/5: cy.route() + function syntax
-- Imports: User, isMobile  
-- Comandos: cy.getBySel(), cy.getBySelLike(), cy.login(), cy.database()
-- Percy snapshots obrigatórios
-
 ## CENÁRIOS OBRIGATÓRIOS
 1. Redirecionamento não autenticado (/personal → /signin)
 2. Login com remember me + verificar cookie + logout
