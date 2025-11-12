@@ -10950,12 +10950,6 @@ workflows:
 ## OBJETIVO
 Gere um arquivo de teste Cypress funcional com 7 cenários de nova transação para Real World App.
 
-## CONTEXTO TÉCNICO
-- Cypress v4/5: cy.route() + function syntax
-- Imports: User, isMobile  
-- Comandos: cy.getBySel(), cy.getBySelLike(), cy.login(), cy.database()
-- Percy snapshots obrigatórios
-
 ## CENÁRIOS OBRIGATÓRIOS
 1. Criar transação completa (payment) com contato existente
 2. Criar transação completa (request) com contato existente  
@@ -10965,14 +10959,6 @@ Gere um arquivo de teste Cypress funcional com 7 cenários de nova transação p
 6. Cancelar transação em qualquer step
 7. Transação com valor máximo e mínimo
 
-## REGRAS CRÍTICAS
-- Function syntax (não arrow functions)  
-- Login obrigatório antes de cada teste
-- Fluxo: /new → step 1 (contato) → step 2 (amount/note) → step 3 (review/submit)
-- Contacts: cy.database("find", "contacts") ou search por username
-- Validações: .type("texto").find("input").clear().focus().blur()
-- Valores monetários: formato correto com decimais
-- Mobile: navegação pode usar drawer
 
 ## RESULTADO
 Gere um códigoTypeScript completo com os 7 testes de nova transação que rode sem erros no Real World App.

@@ -10957,19 +10957,6 @@ workflows:
 Gere um arquivo de teste Cypress funcional com 7 cenários de notificações para Real World App.
 
 
-
-## CONTEXTO TÉCNICO
-
-- Cypress v4/5: cy.route() + function syntax
-
-- Imports: User, Transaction, isMobile
-
-- Comandos: cy.getBySel(), cy.getBySelLike(), cy.loginByXstate(), cy.database(), cy.switchUser(), cy.createTransaction()
-
-- Percy snapshots obrigatórios
-
-
-
 ## CENÁRIOS OBRIGATÓRIOS
 
 1. User A likes transaction of User B → User B gets notification
@@ -10985,36 +10972,6 @@ Gere um arquivo de teste Cypress funcional com 7 cenários de notificações par
 6. User A sends payment request to User C → User C gets notification
 
 7. Renders empty notifications state
-
-
-
-## REGRAS CRÍTICAS
-
-- Function syntax (não arrow functions)
-
-- Login: cy.loginByXstate(ctx.userA.username)
-
-- 3 usuários: ctx.userA, ctx.userB, ctx.userC
-
-- Routes: cy.route("GET", "/notifications"), cy.route("POST", "/transactions"), cy.route("PATCH", "/notifications/*")
-
-- Switch users: cy.switchUser(ctx.userB.username)
-
-- Notifications: cy.getBySelLike("notifications-link").click() → /notifications
-
-- Badge count: cy.getBySel("nav-top-notifications-count")
-
-- Notification items: cy.getBySelLike("notification-list-item").should("have.length", 9)
-
-- Mark as read: cy.getBySelLike("notification-mark-read").first().click()
-
-- Empty state: cy.route("GET", "/notifications", []) + cy.getBySel("empty-list-header")
-
-- Mobile: isMobile() + cy.getBySel("sidenav-toggle").click()
-
-- Actions: like button, comment input, createTransaction (payment/request)
-
-- **PAYMENT NOTIFICATION:** User B receives payment → notification shows User B.firstName + "received payment"
 
 
 

@@ -10950,28 +10950,11 @@ workflows:
 ## OBJETIVO
 Gere um arquivo de teste Cypress funcional com 3 cenários de configurações de usuário para Real World App.
 
-## CONTEXTO TÉCNICO
-- Cypress v4/5: cy.route() + function syntax
-- Imports: User, isMobile  
-- Comandos: cy.getBySel(), cy.getBySelLike(), cy.login(), cy.database()
-- Percy snapshots obrigatórios
-
 ## CENÁRIOS OBRIGATÓRIOS
 1. Renderizar formulário de user settings
 2. Validações de formulário (firstName, lastName, email, phoneNumber)
 3. Atualizar perfil completo + verificar mudança na sidebar
 
-## REGRAS CRÍTICAS
-- Function syntax (não arrow functions)
-- Login obrigatório + navegar para /user/settings via sidenav
-- Mobile: cy.getBySel("sidenav-toggle").click() antes de navegar
-- Validações específicas: .type("text").clear().blur() para disparar helper texts
-- Email validation: formato inválido "abc@bob." para teste
-- Phone validation: formato inválido "615-555-" para teste
-- Helper texts: usar seletores ID "#user-settings-field-input-helper-text"
-- Update: cy.wait("@updateUser") com status 204
-- Verificação: sidebar username atualizado após save
-- Submit disabled quando há erros de validação
 
 ## RESULTADO
 Gere um códigoTypeScript completo com os 3 testes de user settings que rode sem erros no Real World App.

@@ -10965,14 +10965,6 @@ Gere um arquivo de teste Cypress funcional com 7 cenários de autenticação par
 6. Erro credenciais inválidas 
 7. Erro senha incorreta
 
-## REGRAS CRÍTICAS
-- Function syntax (não arrow functions)
-- Validações: .type("texto").find("input").clear().focus().blur()
-- cy.database retorna User direto (não array)
-- Helper texts: .should("be.visible").and("contain")
-- Error messages: .should("have.text") 
-- Onboarding SEM cy.wait("@allUsers") se causar timeout
-- Mobile: verificar isMobile() antes logout
 
 ## RESULTADO
 Gere o código TypeScript completo com os 7 testes de autenticação que rode sem erros no Real World App.

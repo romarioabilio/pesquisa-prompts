@@ -10950,11 +10950,6 @@ workflows:
 ## OBJETIVO
 Gere um arquivo de teste Cypress funcional com 6 cenários de visualização de transação para Real World App.
 
-## CONTEXTO TÉCNICO
-- Cypress v4/5: cy.route() + function syntax
-- Imports: User, Transaction, isMobile  
-- Comandos: cy.getBySel(), cy.getBySelLike(), cy.login(), cy.database()
-- Percy snapshots obrigatórios
 
 ## CENÁRIOS OBRIGATÓRIOS
 1. Navigation tabs ficam ocultas na página de transaction view
@@ -10964,17 +10959,7 @@ Gere um arquivo de teste Cypress funcional com 6 cenários de visualização de 
 5. Rejeitar transaction request + verificar botão desaparece
 6. Botões accept/reject não aparecem em transação completa
 
-## REGRAS CRÍTICAS
-- Function syntax (não arrow functions)
-- Login obrigatório + setup context com cy.database("find", "users")
-- Context setup: transaction request pendente para testes accept/reject
-- Navegação: /transaction/:id para visualizar transação específica
-- Database queries específicas: status, requestStatus, requestResolvedAt
-- Routes: cy.wait("@getTransaction"), cy.wait("@updateTransaction")
-- Comments: usar .type("comment{enter}") para enviar
-- Like/Accept/Reject: verificar botão disabled após ação
-- Estado completo: transactions com status="complete", requestStatus="accepted"
-- Mobile: navigation tabs behavior
+
 
 ## RESULTADO
 Gere um arquivo TypeScript completo com os 6 testes de transaction view que rode sem erros no Real World App.

@@ -10950,27 +10950,12 @@ workflows:
 ## OBJETIVO
 Gere um arquivo de teste Cypress funcional com 4 cenários de contas bancárias para Real World App.
 
-## CONTEXTO TÉCNICO
-- Cypress v4/5: cy.route() + function syntax
-- Imports: User, isMobile  
-- Comandos: cy.getBySel(), cy.getBySelLike(), cy.login(), cy.database()
-- Percy snapshots obrigatórios
-
 ## CENÁRIOS OBRIGATÓRIOS
 1. Criar nova conta bancária completa
 2. Validações detalhadas de formulário (bankName, routing, account)
 3. Soft delete de conta bancária existente
 4. Estado vazio da lista + modal onboarding
 
-## REGRAS CRÍTICAS
-- Function syntax (não arrow functions)
-- Login obrigatório antes de cada teste  
-- Navegar para /bankaccounts para gerenciar contas
-- Seletores: usar cy.getBySelLike() para bankName-input, routingNumber-input, accountNumber-input
-- cy.database("find", "bankAccounts") para contas existentes
-- Validações: .type("texto").find("input").clear().focus().blur()
-- Routing: 9 dígitos, Account: formato bancário válido
-- Mobile: drawer navigation para menu
 
 ## RESULTADO
 Gere um código TypeScript completo com os 4 testes de contas bancárias que rode sem erros no Real World App.

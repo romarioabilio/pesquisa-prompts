@@ -10951,11 +10951,6 @@ workflows:
 ## OBJETIVO
 Gere um arquivo de teste Cypress funcional com 21 cenários de feeds de transações para Real World App.
 
-## CONTEXTO TÉCNICO
-- Cypress v4/5: cy.route() + function syntax
-- Imports: User, Transaction, Contact, TransactionStatus, Dinero, date-fns, isMobile
-- Comandos: cy.getBySel(), cy.getBySelLike(), cy.loginByXstate(), cy.database(), cy.pickDateRange(), cy.setTransactionAmountRange()
-- Percy snapshots obrigatórios
 
 ## CENÁRIOS OBRIGATÓRIOS
 1. Toggle navigation drawer (mobile vs desktop)
@@ -10980,14 +10975,6 @@ Gere um arquivo de teste Cypress funcional com 21 cenários de feeds de transaç
 20. Primeiros 5 itens do feed público pertencem a contatos
 21. Feed de amigos mostra apenas transações de contatos
 
-## REGRAS CRÍTICAS
-- Function syntax (não arrow functions)
-- Login: cy.loginByXstate(ctx.user.username)
-- 3 tabs: personal-tab, public-tab, contacts-tab
-- Mobile: isMobile() + cy.getBySel("sidenav-toggle").click()
-- Personal feed: SEMPRE clicar tab antes de filtros
-- Fixture: cy.route("/transactions/public*", "fixture:public-transactions")
-- Empty: cy.getBySel("empty-list-header") = "No Transactions"
 
 ## RESULTADO
 Gere um arquivo TypeScript completo com os 21 testes de transaction feeds que rode sem erros no Real World App.
