@@ -10977,7 +10977,7 @@ action_prompt = """
 # Se o contexto GIGANTE for incluído, ele viria aqui, ANTES da action_prompt.
 
 # Defina o modelo. 'llama-3.1-8b-instant' é recomendado para velocidade.
-model_to_use = "openai/gpt-oss-120b" 
+model_to_use = "openai/gpt-oss-20b" 
 
 # Cria o array de mensagens para a API
 messages_array = [
