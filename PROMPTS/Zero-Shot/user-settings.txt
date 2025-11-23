@@ -1,0 +1,13 @@
+# PROMPT ZERO-SHOT - TESTES CYPRESS USER SETTINGS
+
+## OBJETIVO
+Gere um arquivo de teste Cypress funcional com 3 cenários de configurações de usuário para Real World App.
+
+## CENÁRIOS OBRIGATÓRIOS
+1. Renderizar formulário de user settings
+2. Validações de formulário (firstName, lastName, email, phoneNumber)
+3. Atualizar perfil completo + verificar mudança na sidebar
+
+
+## RESULTADO
+Gere um códigoTypeScript completo com os 3 testes de user settings que rode sem erros no Real World App.

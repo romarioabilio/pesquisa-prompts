@@ -1,0 +1,18 @@
+# PROMPT ZERO-SHOT - TESTES CYPRESS TRANSACTION VIEW
+
+## OBJETIVO
+Gere um arquivo de teste Cypress funcional com 6 cenários de visualização de transação para Real World App.
+
+
+## CENÁRIOS OBRIGATÓRIOS
+1. Navigation tabs ficam ocultas na página de transaction view
+2. Like em uma transação + verificar contagem + botão disabled
+3. Comentários em transação (múltiplos comments)
+4. Aceitar transaction request + verificar botão desaparece
+5. Rejeitar transaction request + verificar botão desaparece
+6. Botões accept/reject não aparecem em transação completa
+
+
+
+## RESULTADO
+Gere um arquivo TypeScript completo com os 6 testes de transaction view que rode sem erros no Real World App.

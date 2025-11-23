@@ -1,0 +1,17 @@
+# PROMPT ZERO-SHOT - TESTES CYPRESS AUTENTICAÇÃO
+
+## OBJETIVO
+Gere um arquivo de teste Cypress funcional com 7 cenários de autenticação para Real World App.
+
+## CENÁRIOS OBRIGATÓRIOS
+1. Redirecionamento não autenticado (/personal → /signin)
+2. Login com remember me + verificar cookie + logout
+3. Signup completo + onboarding + dashboard
+4. Validações login (campos obrigatórios + botão disabled)
+5. Validações signup (todos campos + password mismatch)
+6. Erro credenciais inválidas 
+7. Erro senha incorreta
+
+
+## RESULTADO
+Gere o código TypeScript completo com os 7 testes de autenticação que rode sem erros no Real World App.

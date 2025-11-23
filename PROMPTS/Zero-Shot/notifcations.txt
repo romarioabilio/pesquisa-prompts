@@ -1,0 +1,28 @@
+# PROMPT ZERO-SHOT - TESTES CYPRESS NOTIFICATIONS
+
+## OBJETIVO
+
+Gere um arquivo de teste Cypress funcional com 7 cenários de notificações para Real World App.
+
+
+## CENÁRIOS OBRIGATÓRIOS
+
+1. User A likes transaction of User B → User B gets notification
+
+2. User C likes transaction between User A and User B → Both get notifications
+
+3. User A comments on transaction of User B → User B gets notification
+
+4. User C comments on transaction between User A and User B → Both get notifications
+
+5. User A sends payment to User B → User B gets notification
+
+6. User A sends payment request to User C → User C gets notification
+
+7. Renders empty notifications state
+
+
+
+## RESULTADO
+
+Gere um arquivo TypeScript completo com os 7 testes de notifications que rode sem erros no Real World App.

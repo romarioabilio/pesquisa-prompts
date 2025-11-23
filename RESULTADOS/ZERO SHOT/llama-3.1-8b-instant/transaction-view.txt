@@ -1,0 +1,64 @@
+✅ Resposta da Groq:
+--------------------------------------------------
+**Arquivo de teste Cypress funcional (transaction-view.spec.ts)**
+```typescript
+/// <reference types="cypress" />
+
+describe('Transaction View', () => {
+  beforeEach(() => {
+    cy.server();
+    cy.route('GET', 'http://localhost:3000/transaction/*', 'fixture:public-transactions.json');
+  });
+
+  it('Navigation tabs são ocultadas na página de transaction view', () => {     
+    cy.visit('/transaction/123456');
+    cy.get('[data-test="nav-transaction-tabs"]').should('be.hidden');
+  });
+
+  it('Like em uma transação + verificar contagem + botão disabled', () => {     
+    cy.visit('/transaction/123456');
+    cy.get('[data-test="transaction-like-button-123456"]').should('be.disabled');
+    cy.get('[data-test="transaction-like-count-123456"]').should('contain', '0');
+    cy.get('[data-test="transaction-like-button-123456"]').click();
+    cy.get('[data-test="transaction-like-count-123456"]').should('contain', '1');
+    cy.get('[data-test="transaction-like-button-123456"]').should('be.enabled');
+  });
+
+  it('Comentários em transação (múltiplos comments)', () => {
+    cy.visit('/transaction/123456');
+    cy.get('[data-test="comment-list-item-1"]').should('exist');
+    cy.get('[data-test="comment-list-item-2"]').should('exist');
+    cy.get('[data-test="comment-list-item-3"]').should('exist');
+  });
+
+  it('Aceitar transaction request + verificar botão desaparece', () => {        
+    cy.visit('/transaction/123456');
+    cy.get('[data-test="transaction-accept-request-123456"]').should('exist');  
+    cy.get('[data-test="transaction-accept-request-123456"]').click();
+    cy.get('[data-test="transaction-accept-request-123456"]').should('not.exist');
+  });
+
+  it('Rejeitar transaction request + verificar botão desaparece', () => {       
+    cy.visit('/transaction/123456');
+    cy.get('[data-test="transaction-reject-request-123456"]').should('exist');  
+    cy.get('[data-test="transaction-reject-request-123456"]').click();
+    cy.get('[data-test="transaction-reject-request-123456"]').should('not.exist');
+  });
+
+  it('Botões accept/reject não aparecem em transação completa', () => {
+    cy.visit('/transaction/123456');
+    cy.get('[data-test="transaction-item-123456"]').should('contain', 'Status: Pendente');
+    cy.get('[data-test="transaction-accept-request-123456"]').should('not.exist');
+    cy.get('[data-test="transaction-reject-request-123456"]').should('not.exist');
+  });
+});
+```
+Esse arquivo de teste faz uso das funcionalidades do Cypress para simular ações de usuário e verificar o comportamento do código-fonte da Real World App. Os 6 cenários definem testes que cobrem os casos obrigatórios listados acima.
+
+Para rodar esse arquivo de teste, certifique-se de ter o Cypress instalado e configurado corretamente em seu projeto. Além disso, você precisará criar os fixtures necessários, como `public-transactions.json`, que será utilizado no cenário de teste `1. Navigation tabs são ocultadas na página de transaction view`.       
+--------------------------------------------------
+
+Detalhes de Uso:
+Tokens de entrada: 71151
+Tokens de saída: 723
+Total de tokens usados: 71874

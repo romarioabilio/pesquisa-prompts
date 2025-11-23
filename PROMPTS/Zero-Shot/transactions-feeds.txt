@@ -1,0 +1,32 @@
+# PROMPT ZERO-SHOT - TESTES CYPRESS TRANSACTION FEEDS
+
+## OBJETIVO
+Gere um arquivo de teste Cypress funcional com 21 cenários de feeds de transações para Real World App.
+
+
+## CENÁRIOS OBRIGATÓRIOS
+1. Toggle navigation drawer (mobile vs desktop)
+2. Renderizar variações de transaction items (paid, charged, requested)
+3. Paginar feed pessoal de transações
+4. Paginar feed público de transações 
+5. Paginar feed de contatos de transações
+6. Fechar modal de date range picker (mobile)
+7. Filtrar feed pessoal por data
+8. Filtrar feed público por data
+9. Filtrar feed de contatos por data
+10. Feed pessoal sem transações (data fora do range)
+11. Feed público sem transações (data fora do range)
+12. Feed de contatos sem transações (data fora do range)
+13. Filtrar feed pessoal por valor
+14. Filtrar feed público por valor
+15. Filtrar feed de contatos por valor
+16. Feed pessoal sem transações (valor fora do range)
+17. Feed público sem transações (valor fora do range)
+18. Feed de contatos sem transações (valor fora do range)
+19. Feed pessoal mostra apenas transações do usuário
+20. Primeiros 5 itens do feed público pertencem a contatos
+21. Feed de amigos mostra apenas transações de contatos
+
+
+## RESULTADO
+Gere um arquivo TypeScript completo com os 21 testes de transaction feeds que rode sem erros no Real World App.

@@ -1,0 +1,99 @@
+✅ Resposta da Groq:
+--------------------------------------------------
+Aqui está um exemplo de como você pode criar um arquivo de teste Cypress para os cenários de notificação que você mencionou:
+```typescript
+/// <reference types="cypress" />
+
+describe('Notificações', () => {
+  beforeEach(() => {
+    // Faça login como usuário A
+    cy.login('userA', 'passwordA');
+  });
+
+  it('User A likes transaction of User B', () => {
+    // Crie uma transação entre User A e User B
+    cy.createTransaction('payment', 'userB', 10);
+
+    // Like na transação
+    cy.get('[data-test="transaction-like-button"]').click();
+
+    // Verifique se User B recebeu notificação
+    cy.get('[data-test="notification-list-item"]').should('contain', 'User A liked your transaction');
+  });
+
+  it('User C likes transaction between User A and User B', () => {
+    // Crie uma transação entre User A e User B
+    cy.createTransaction('payment', 'userB', 10);
+
+    // Faça login como usuário C
+    cy.login('userC', 'passwordC');
+
+    // Like na transação
+    cy.get('[data-test="transaction-like-button"]').click();
+
+    // Verifique se ambos os usuários receberam notificações
+    cy.get('[data-test="notification-list-item"]').should('contain', 'User C liked your transaction');
+    cy.get('[data-test="notification-list-item"]').should('contain', 'User C liked your transaction');
+  });
+
+  it('User A comments on transaction of User B', () => {
+    // Crie uma transação entre User A e User B
+    cy.createTransaction('payment', 'userB', 10);
+
+    // Comente na transação
+    cy.get('[data-test="transaction-comment-input"]').type('Olá, estou comentando!');
+    cy.get('[data-test="transaction-comment-submit"]').click();
+
+    // Verifique se User B recebeu notificação
+    cy.get('[data-test="notification-list-item"]').should('contain', 'User A commented on your transaction');
+  });
+
+  it('User C comments on transaction between User A and User B', () => {
+    // Crie uma transação entre User A e User B
+    cy.createTransaction('payment', 'userB', 10);
+
+    // Faça login como usuário C
+    cy.login('userC', 'passwordC');
+
+    // Comente na transação
+    cy.get('[data-test="transaction-comment-input"]').type('Olá, estou comentando!');
+    cy.get('[data-test="transaction-comment-submit"]').click();
+
+    // Verifique se ambos os usuários receberam notificações
+    cy.get('[data-test="notification-list-item"]').should('contain', 'User C commented on your transaction');
+    cy.get('[data-test="notification-list-item"]').should('contain', 'User C commented on your transaction');
+  });
+
+  it('User A sends payment to User B', () => {
+    // Crie uma transação entre User A e User B
+    cy.createTransaction('payment', 'userB', 10);
+
+    // Verifique se User B recebeu notificação
+    cy.get('[data-test="notification-list-item"]').should('contain', 'User A sent you a payment');
+  });
+
+  it('User A sends payment request to User C', () => {
+    // Crie uma transação entre User A e User C
+    cy.createTransaction('request', 'userC', 10);
+
+    // Verifique se User C recebeu notificação
+    cy.get('[data-test="notification-list-item"]').should('contain', 'User A sent you a payment request');
+  });
+
+  it('Renders empty notifications state', () => {
+    // Verifique se a lista de notificações está vazia
+    cy.get('[data-test="notification-list"]').should('be.empty');
+  });
+});
+```
+Esse exemplo utiliza os comandos `cy.login`, `cy.createTransaction`, `cy.get` e `cy.should` para interagir com a aplicação e verificar se as notificações são exibidas corretamente.
+
+Lembre-se de que você precisará adaptar os seletores de elementos (`data-test` atributos) para corresponderem à estrutura HTML da sua aplicação. Além disso, você precisará implementar os comandos `cy.login` e `cy.createTransaction` para corresponderem às funcionalidades da sua aplicação.
+
+Espero que isso ajude! Se tiver alguma dúvida ou precisar de mais ajuda, não hesite em perguntar.
+--------------------------------------------------
+
+Detalhes de Uso:
+Tokens de entrada: 71175
+Tokens de saída: 975
+Total de tokens usados: 72150

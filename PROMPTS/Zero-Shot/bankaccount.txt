@@ -1,0 +1,14 @@
+# PROMPT ZERO-SHOT - TESTES CYPRESS BANK ACCOUNTS
+
+## OBJETIVO
+Gere um arquivo de teste Cypress funcional com 4 cenários de contas bancárias para Real World App.
+
+## CENÁRIOS OBRIGATÓRIOS
+1. Criar nova conta bancária completa
+2. Validações detalhadas de formulário (bankName, routing, account)
+3. Soft delete de conta bancária existente
+4. Estado vazio da lista + modal onboarding
+
+
+## RESULTADO
+Gere um código TypeScript completo com os 4 testes de contas bancárias que rode sem erros no Real World App.
