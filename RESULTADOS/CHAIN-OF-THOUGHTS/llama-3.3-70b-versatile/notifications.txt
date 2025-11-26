@@ -1,0 +1,109 @@
+✅ Resposta da Groq:
+--------------------------------------------------
+ANÁLISE
+O arquivo notifications.spec.ts é responsável por testar a funcionalidade de notificações do projeto real-world-express. Para criar o teste de aceitação completo, precisamos analisar a estrutura do arquivo e entender quais imports são necessários.
+
+O arquivo deve ter uma estrutura de describe, que é o bloco principal do teste. Além disso, precisamos importar os módulos necessários, como o Cypress e os tipos de notificações.
+
+Tipos e constantes:
+- Notificação
+- Tipos de notificações (payment, like, comment)
+
+PLANEJAMENTO
+Vou planejar a estrutura completa do arquivo notifications.spec.ts. O arquivo terá os seguintes grupos de testes:
+- Notificações: Testes relacionados à lista de notificações
+- Marcação como lida: Testes relacionados à marcação de notificações como lidas
+- Navegação: Testes relacionados à navegação entre as telas de notificações
+
+A estratégia de implementação será a seguinte:
+- Utilizar o comando customizado 'loginByXstate' para logar no aplicativo
+- Utilizar o comando customizado 'getBySel' para selecionar elementos da tela
+- Utilizar o comando 'cy.request' para fazer requisições ao servidor
+
+IMPLEMENTAÇÃO
+Implementando notificações...
+Objetivo: Testar a lista de notificações
+Estratégia: Utilizar o comando 'getBySel' para selecionar a lista de notificações e verificar se ela está vazia ou não
+```javascript
+describe('Notifications', () => {
+  beforeEach(() => {
+    cy.loginByXstate('testuser', 'testpassword')
+  })
+
+  it('Lista de notificações', () => {
+    cy.getBySel('notifications-list')
+      .should('be.visible')
+      .get('li')
+      .should('have.length', 5)
+  })
+})
+```
+Implementando marcação como lida...
+Objetivo: Testar a marcação de notificações como lidas
+Estratégia: Utilizar o comando 'getBySel' para selecionar a notificação e clicar no botão de marcação como lida
+```javascript
+it('Marcar notificação como lida', () => {
+  cy.getBySel('notification-item-0')
+    .get('button')
+    .click()
+    .getBySel('notification-item-0')
+    .should('have.class', 'read')
+})
+```
+Implementando navegação...
+Objetivo: Testar a navegação entre as telas de notificações
+Estratégia: Utilizar o comando 'getBySel' para selecionar a notificação e clicar no botão de navegação
+```javascript
+it('Navegação para tela de notificação', () => {
+  cy.getBySel('notification-item-0')
+    .get('a')
+    .click()
+    .url()
+    .should('contain', 'notification')
+})
+```
+VALIDAÇÃO
+Revisando sintaxe e padrões...
+Verificando se o código está seguindo os padrões do Cypress e se a sintaxe está correta.
+
+ENTREGA
+CÓDIGO FINAL COMPLETO:
+```javascript
+/// <reference types="cypress" />
+
+describe('Notifications', () => {
+  beforeEach(() => {
+    cy.loginByXstate('testuser', 'testpassword')
+  })
+
+  it('Lista de notificações', () => {
+    cy.getBySel('notifications-list')
+      .should('be.visible')
+      .get('li')
+      .should('have.length', 5)
+  })
+
+  it('Marcar notificação como lida', () => {
+    cy.getBySel('notification-item-0')
+      .get('button')
+      .click()
+      .getBySel('notification-item-0')
+      .should('have.class', 'read')
+  })
+
+  it('Navegação para tela de notificação', () => {
+    cy.getBySel('notification-item-0')
+      .get('a')
+      .click()
+      .url()
+      .should('contain', 'notification')
+  })
+})
+```
+Este código deve ser colocado no arquivo notifications.spec.ts e executado com o comando `npx cypress run` para testar a funcionalidade de notificações do projeto real-world-express.
+--------------------------------------------------
+
+Detalhes de Uso:
+Tokens de entrada: 71371
+Tokens de saída: 942
+Total de tokens usados: 72313
