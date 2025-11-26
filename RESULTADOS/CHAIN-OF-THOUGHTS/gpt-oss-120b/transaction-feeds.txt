@@ -1,0 +1,185 @@
+✅ Resposta da Groq:
+--------------------------------------------------
+**Chain of Thought**
+
+---
+
+### ANÁLISE  
+
+1. **Estrutura do `describe`**  
+   - O arquivo de teste deve conter um `describe('Transaction Feeds')` que engloba todos os cenários de aceitação da página de feeds de transações.  
+   - Dentro dele, usaremos `beforeEach` para preparar o ambiente:  
+     * Resetar o banco de dados com a task **`db:seed`**.  
+     * Selecionar um usuário qualquer da base (primeiro usuário) e fazer login via **`loginByApi`** (mais rápido que UI).  
+     * Visitar a página principal (`/`) que exibe o feed **público** por padrão.  
+
+2. **Imports necessários**  
+   - Não precisamos importar nada extra, pois o Cypress já tem acesso aos **commands customizados** definidos em `cypress/support/commands.ts`.
+
+3. **Tipos e constantes**
+   - Não há necessidade de tipos TypeScript no teste (ele será escrito em JavaScript/TS, mas o Cypress aceita ambos).
+   - Constantes auxiliares: seletor genérico `transactionItem` → `[data-test^=transaction-item-]`.
+   - Utilizaremos os comandos customizados:
+     * `cy.loginByApi(username, password)` – login rápido via API.
+     * `cy.database('find', 'users')` – busca um usuário da base.
+     * `cy.setTransactionAmountRange(min, max)` – abre o slider de “Amount” e dispara o `onChange` interno.
+     * `cy.nextTransactionFeedPage(service, page)` – força o carregamento da página *n* do feed (público, contatos ou pessoal).
+
+---
+
+### PLANEJAMENTO                                                                                                                                              nita traz novos registros.
+**Objetivo geral:** garantir que os três feeds (Public, Contacts, Personal) carregam dados, que o filtro de intervalo de valor funciona e que a paginação infin
+**Passos do `beforeEach`:**
+
+```text
+1. cy.task('db:seed')                // garante estado limpo
+2. cy.database('find', 'users')      // pega um usuário existente
+3. cy.loginByApi(user.username)     // autentica
+4. cy.visit('/')                     // abre a página principal (Public feed)
+5. cy.get('[data-test=nav-transaction-tabs]') // garante que as abas foram renderizadas
+```
+
+**Grupos de testes (`it`):**
+
+1. **Exibe feed público por padrão** – verifica presença de itens.
+2. **Navega para a aba “Contacts”** – clica no tab e verifica itens.
+3. **Navega para a aba “Personal”** – idem.                                                                                                                   a que o total aumentou.valor** – abre o filtro, define um intervalo pequeno (0‑30), verifica que a quantidade de itens diminuiu.
+5. **Carrega a próxima página do feed público** – captura o número de itens antes, chama `cy.nextTransactionFeedPage('publicTransactionService', 2)` e verifica
+**Estratégia de implementação:**
+
+- Utilizar **`cy.get('[data-test^=transaction-item-]')`** para contar itens.                                                                                  ens se torne menor que antes (Cypress já espera a UI).av-public-tab`, `nav-contacts-tab`, `nav-personal-tab`.
+- Para a paginação, o comando customizado já dispara o evento XState; após a chamada, esperar que a lista contenha mais itens que antes.dar que o número de ite
+
+---
+
+### IMPLEMENTAÇÃO
+
+```ts
+/// <reference types="cypress" />
+
+/**
+ * Cypress acceptance test – Transaction Feeds
+ * -------------------------------------------------
+ * This spec validates:
+ *   1. Public feed loads by default
+ *   2. Navigation to Contacts and Personal tabs
+ *   3. Amount‑range filter works
+ *   4. Infinite‑scroll pagination loads the next page
+ *
+ * Custom commands used (see cypress/support/commands.ts):
+ *   - cy.task('db:seed')
+ *   - cy.database('find', 'users')
+ *   - cy.loginByApi(username, password)
+ *   - cy.setTransactionAmountRange(min, max)
+ *   - cy.nextTransactionFeedPage(service, page)
+ *
+ * All selectors are based on the `data-test` attributes present
+ * in the source code.
+ */
+
+describe('Transaction Feeds', () => {
+  /** --------------------------------------------------------------------
+   *  BEFORE EACH
+   * -------------------------------------------------------------------- */
+  beforeEach(() => {
+    // 1️⃣  Resetar o banco de dados
+    cy.task('db:seed');
+
+    // 2️⃣  Recuperar um usuário existente (primeiro registro)
+    cy.database('find', 'users').then((user) => {
+      // 3️⃣  Login rápido via API (usa a senha padrão configurada no .env)
+      cy.loginByApi(user.username, Cypress.env('defaultPassword'));
+
+      // 4️⃣  Abrir a aplicação – o feed público é a rota padrão
+      cy.visit('/');
+    });
+
+    // Garantir que as abas de navegação foram renderizadas
+    cy.get('[data-test=nav-transaction-tabs]').should('be.visible');
+  });
+
+  /** --------------------------------------------------------------------
+   *  1️⃣  PUBLIC FEED – carregado por padrão
+   * -------------------------------------------------------------------- */
+  it('displays the public transaction feed by default', () => {
+    // O feed público usa o componente TransactionList → lista de itens
+    cy.get('[data-test^=transaction-item-]').should('have.length.greaterThan', 0);
+  });
+
+  /** --------------------------------------------------------------------
+   *  2️⃣  CONTACTS TAB
+   * -------------------------------------------------------------------- */
+  it('shows contacts transactions when the Contacts tab is selected', () => {
+    // Clicar na aba "Friends" (contacts)
+    cy.get('[data-test=nav-contacts-tab]').click();
+
+    // Aguarda a lista ser preenchida
+    cy.get('[data-test^=transaction-item-]').should('have.length.greaterThan', 0);
+  });
+
+  /** --------------------------------------------------------------------
+   *  3️⃣  PERSONAL TAB
+   * -------------------------------------------------------------------- */
+  it('shows personal transactions when the Personal tab is selected', () => {
+    // Clicar na aba "Mine" (personal)
+    cy.get('[data-test=nav-personal-tab]').click();
+
+    // Verifica que há itens
+    cy.get('[data-test^=transaction-item-]').should('have.length.greaterThan', 0);
+  });
+
+  /** --------------------------------------------------------------------
+   *  4️⃣  AMOUNT‑RANGE FILTER
+   * -------------------------------------------------------------------- */
+  it('filters transactions by amount range', () => {
+    // Contar itens antes de aplicar o filtro
+    cy.get('[data-test^=transaction-item-]')
+      .its('length')
+      .as('itemsBefore');
+
+    // Abrir o filtro de valor (chip) e definir intervalo 0‑30 (valor interno *1000)
+    cy.get('[data-test=transaction-list-filter-amount-range-button]').click();
+    // O comando customizado dispara o onChange do Slider interno
+    cy.setTransactionAmountRange(0, 30);
+
+    // O filtro dispara a busca; esperamos que a lista seja atualizada
+    // e que o número de itens seja **menor ou igual** ao anterior
+  /** --------------------------------------------------------------------
+   *  5️⃣  INFINITE SCROLL – next page of public feed
+   * -------------------------------------------------------------------- */
+  it('loads the next page of the public feed via infinite scroll', () => {
+    cy.get('[data-test^=transaction-item-]')
+      .its('length')
+      .as('firstPageCount');
+
+    // Acionar a máquina do feed público para buscar a página 2
+    // O comando utiliza a referência `window.publicTransactionService`
+    cy.nextTransactionFeedPage('publicTransactionService', 2);
+
+    // Esperar que a lista seja atualizada e que o total de itens aumente
+    cy.get('@firstPageCount').then((firstCount) => {
+      cy.get('[data-test^=transaction-item-]')
+        .its('length')
+        .should('be.gt', firstCount);
+    });
+  });
+});
+```
+
+**Pontos importantes do código acima**
+
+- **`cy.task('db:seed')`** garante que o banco está no estado conhecido antes de cada cenário.
+- **`cy.database('find', 'users')`** traz o primeiro usuário da seed; a senha padrão vem de `Cypress.env('defaultPassword')`.
+- **`cy.loginByApi`** faz login por requisição, evitando a UI e tornando o teste mais estável.
+- **Seletores `data-test`** são usados em todas as interações, seguindo a convenção do projeto.
+- **Comando `cy.setTransactionAmountRange`** já está implementado em `commands.ts` e dispara a alteração do slider sem precisar manipular o DOM diretamente.   
+- **Comando `cy.nextTransactionFeedPage`** utiliza a máquina XState exposta (`window.publicTransactionService`) para solicitar a página 2 do feed público.     
+- Cada `it` verifica **exibição de itens** (`should('have.length.greaterThan', 0)`) e, nos casos de filtro e paginação, compara a quantidade de itens antes e depois da ação.
+
+Coloque este arquivo em `cypress/tests/ui/transaction-feeds.spec.ts`. Ele será encontrado pelo Cypress (config `integrationFolder: "cypress/tests"`). Quando o pipeline for executado, o teste será executado em todos os navegadores configurados, garantindo a cobertura da funcionalidade de feeds de transações.
+--------------------------------------------------
+
+Detalhes de Uso:
+Tokens de entrada: 73420
+Tokens de saída: 3297
+Total de tokens usados: 76717
