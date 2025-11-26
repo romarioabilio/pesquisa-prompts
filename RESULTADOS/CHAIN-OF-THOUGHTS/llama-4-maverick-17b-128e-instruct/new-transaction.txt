@@ -1,0 +1,175 @@
+✅ Resposta da Groq:
+--------------------------------------------------
+ANÁLISE
+   - Estrutura do describe: O teste será escrito em um arquivo chamado `new-transaction.spec.ts` dentro da pasta `cypress/tests/ui`. O describe será nomeado como "New Transaction" e irá testar a funcionalidade de criar uma nova transação.
+   - Imports necessários: Será necessário importar comandos customizados do Cypress, como `getBySel` e `loginByXstate`.
+   - Tipos e constantes: Será necessário definir tipos e constantes para as transações, como `TransactionType` e `TransactionStatus`.
+
+PLANEJAMENTO
+   "Vou planejar a estrutura completa..."
+   - beforeEach: Irá realizar o login antes de cada teste.
+   - Lista dos 6 testes:
+     1. "should render transaction create step one form"
+     2. "should render transaction create step two form"
+     3. "should render transaction create step three form"
+     4. "should create a new transaction"
+     5. "should validate transaction amount"
+     6. "should validate transaction description"
+   - Estratégia de implementação: Irá utilizar comandos customizados do Cypress para interagir com os elementos da página e verificar os resultados esperados. 
+
+IMPLEMENTAÇÃO
+   Implementando teste "should render transaction create step one form"...
+   Objetivo: Verificar se o formulário de criar transação é renderizado corretamente.
+   Estratégia: Utilizar o comando `getBySel` para verificar se o formulário de criar transação está presente na página.
+   ```typescript
+it("should render transaction create step one form", () => {
+  cy.visit("/transaction/new");
+  cy.getBySel("transaction-create-step-one-form").should("be.visible");
+});
+```
+
+   Implementando teste "should render transaction create step two form"...
+   Objetivo: Verificar se o formulário de criar transação é renderizado corretamente após selecionar um contato.
+   Estratégia: Utilizar o comando `getBySel` para selecionar um contato e verificar se o formulário de criar transação está presente na página.
+   ```typescript
+it("should render transaction create step two form", () => {
+  cy.visit("/transaction/new");
+  cy.getBySel("user-list-item-0").click();
+  cy.getBySel("transaction-create-step-two-form").should("be.visible");
+});
+```
+
+   Implementando teste "should render transaction create step three form"...
+   Objetivo: Verificar se o formulário de criar transação é renderizado corretamente após preencher os dados da transação.
+   Estratégia: Utilizar o comando `getBySel` para preencher os dados da transação e verificar se o formulário de criar transação está presente na página.      
+   ```typescript
+it("should render transaction create step three form", () => {
+  cy.visit("/transaction/new");
+  cy.getBySel("user-list-item-0").click();
+  cy.getBySel("transaction-create-amount-input").type("100");
+  cy.getBySel("transaction-create-description-input").type("Test transaction");
+  cy.getBySel("transaction-create-submit-request").click();
+  cy.getBySel("transaction-create-step-three-form").should("be.visible");
+});
+```
+
+   Implementando teste "should create a new transaction"...
+   Objetivo: Verificar se uma nova transação é criada com sucesso.
+   Estratégia: Utilizar o comando `getBySel` para preencher os dados da transação e verificar se a transação foi criada com sucesso.
+   ```typescript
+it("should create a new transaction", () => {
+  cy.visit("/transaction/new");
+  cy.getBySel("user-list-item-0").click();
+  cy.getBySel("transaction-create-amount-input").type("100");
+  cy.getBySel("transaction-create-description-input").type("Test transaction");
+  cy.getBySel("transaction-create-submit-request").click();
+  cy.getBySel("transaction-create-step-three-form").should("be.visible");
+  cy.getBySel("new-transaction-return-to-transactions").click();
+  cy.getBySel("transaction-list").should("be.visible");
+});
+```
+
+   Implementando teste "should validate transaction amount"...
+   Objetivo: Verificar se o valor da transação é validado corretamente.
+   Estratégia: Utilizar o comando `getBySel` para preencher o valor da transação com um valor inválido e verificar se o erro é exibido.
+   ```typescript
+it("should validate transaction amount", () => {
+  cy.visit("/transaction/new");
+  cy.getBySel("user-list-item-0").click();
+  cy.getBySel("transaction-create-amount-input").type("abc");
+  cy.getBySel("transaction-create-description-input").type("Test transaction");
+  cy.getBySel("transaction-create-submit-request").click();
+  cy.getBySel("transaction-create-amount-input").should("have.class", "Mui-error");
+});
+```
+
+   Implementando teste "should validate transaction description"...
+   Objetivo: Verificar se a descrição da transação é validada corretamente.
+   Estratégia: Utilizar o comando `getBySel` para preencher a descrição da transação com um valor inválido e verificar se o erro é exibido.
+   ```typescript
+it("should validate transaction description", () => {
+  cy.visit("/transaction/new");
+  cy.getBySel("user-list-item-0").click();
+  cy.getBySel("transaction-create-amount-input").type("100");
+  cy.getBySel("transaction-create-description-input").type("");
+  cy.getBySel("transaction-create-submit-request").click();
+  cy.getBySel("transaction-create-description-input").should("have.class", "Mui-error");
+});
+```
+
+VALIDAÇÃO
+   "Revisando sintaxe e padrões..."
+   - Template literals com ` (não ")
+   - forEach para atributos de busca
+   - Comandos customizados
+   - Cálculos com Dinero
+
+ENTREGA
+   "CÓDIGO FINAL COMPLETO:"
+
+```typescript
+/// <reference types="cypress" />
+
+import { Dinero } from "dinero.js";
+
+describe("New Transaction", () => {
+  beforeEach(() => {
+    cy.loginByXstate("username", "password");
+  });
+
+  it("should render transaction create step one form", () => {
+    cy.visit("/transaction/new");
+    cy.getBySel("transaction-create-step-one-form").should("be.visible");
+  });
+
+  it("should render transaction create step two form", () => {
+    cy.visit("/transaction/new");
+    cy.getBySel("user-list-item-0").click();
+    cy.getBySel("transaction-create-step-two-form").should("be.visible");
+  });
+
+  it("should render transaction create step three form", () => {
+    cy.visit("/transaction/new");
+    cy.getBySel("user-list-item-0").click();
+    cy.getBySel("transaction-create-amount-input").type("100");
+    cy.getBySel("transaction-create-description-input").type("Test transaction");
+    cy.getBySel("transaction-create-submit-request").click();
+    cy.getBySel("transaction-create-step-three-form").should("be.visible");
+  });
+
+  it("should create a new transaction", () => {
+    cy.visit("/transaction/new");
+    cy.getBySel("user-list-item-0").click();
+    cy.getBySel("transaction-create-amount-input").type("100");
+    cy.getBySel("transaction-create-description-input").type("Test transaction");
+    cy.getBySel("transaction-create-submit-request").click();
+    cy.getBySel("transaction-create-step-three-form").should("be.visible");
+    cy.getBySel("new-transaction-return-to-transactions").click();
+    cy.getBySel("transaction-list").should("be.visible");
+  });
+
+  it("should validate transaction amount", () => {
+    cy.visit("/transaction/new");
+    cy.getBySel("user-list-item-0").click();
+    cy.getBySel("transaction-create-amount-input").type("abc");
+    cy.getBySel("transaction-create-description-input").type("Test transaction");
+    cy.getBySel("transaction-create-submit-request").click();
+    cy.getBySel("transaction-create-amount-input").should("have.class", "Mui-error");
+  });
+
+  it("should validate transaction description", () => {
+    cy.visit("/transaction/new");
+    cy.getBySel("user-list-item-0").click();
+    cy.getBySel("transaction-create-amount-input").type("100");
+    cy.getBySel("transaction-create-description-input").type("");
+    cy.getBySel("transaction-create-submit-request").click();
+    cy.getBySel("transaction-create-description-input").should("have.class", "Mui-error");
+  });
+});
+```
+--------------------------------------------------
+
+Detalhes de Uso:
+Tokens de entrada: 73009
+Tokens de saída: 1772
+Total de tokens usados: 74781
