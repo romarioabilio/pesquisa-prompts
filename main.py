@@ -1,21 +1,19 @@
 from groq import Groq
 import os
 
-# ⚠️ Sua chave (MANTENHA PRIVADA!)
-# Coloque sua chave Groq real aqui
+
 GROQ_API_KEY_DIRECT = "" 
 
 # Inicializa o cliente Groq
 try:
-    # A biblioteca Groq pode ser inicializada passando a chave
+
     client = Groq(api_key=GROQ_API_KEY_DIRECT)
 except Exception as e:
-    # Captura erros de inicialização (chave inválida, etc.)
+
     print(f"Erro ao inicializar o cliente Groq. Verifique a chave inserida. Erro: {e}")
     exit()
 
-# --- Configuração do Contexto ---
-# Use ASPAS TRIPLAS (""") para o bloco de texto grande que serve como CONTEXTO/INSTRUÇÕES
+
 context_prompt = """
 Directory structure:
 └── cypress-realworld-app/
@@ -10965,44 +10963,34 @@ workflows:
     <<: *windows-workflow
 """
 
-# --- Configuração da Ação/Pergunta Específica ---
-# Este é o prompt que contém a pergunta de fato (e pode mudar a cada execução)
+
 action_prompt = """
 
 """
 
-# Você pode carregar o seu prompt GIGANTE de código-fonte aqui se for necessário
-# Por exemplo: SEU_PROMPT_GIGANTE_DO_CÓDIGO = "... conteúdo do arquivo ..."
-# Para este exemplo, usaremos apenas as instruções acima.
-# Se o contexto GIGANTE for incluído, ele viria aqui, ANTES da action_prompt.
 
-# Defina o modelo. 'llama-3.1-8b-instant' é recomendado para velocidade.
-model_to_use = "openai/gpt-oss-20b" 
+model_to_use = "llama-3.1-8b-instant" 
 
-# Cria o array de mensagens para a API
 messages_array = [
     {"role": "system", "content": context_prompt},
     {"role": "user", "content": action_prompt},
 ]
 
-
 print(f"⏳ Enviando prompt para Groq com o modelo {model_to_use}...")
 
 try:
-    # Chama a API para gerar a resposta
+
     chat_completion = client.chat.completions.create(
         messages=messages_array,
         model=model_to_use,
     )
 
-    # Imprime a resposta
     response_content = chat_completion.choices[0].message.content
     print("\n✅ Resposta da Groq:")
     print("--------------------------------------------------")
     print(response_content)
     print("--------------------------------------------------")
 
-    # Informações de custo (tokens)
     input_tokens = chat_completion.usage.prompt_tokens
     output_tokens = chat_completion.usage.completion_tokens
     print(f"\nDetalhes de Uso:")
@@ -11011,5 +10999,5 @@ try:
     print(f"Total de tokens usados: {chat_completion.usage.total_tokens}")
 
 except Exception as e:
-    # Captura erros de tempo de execução (API)
+
     print(f"\n❌ Ocorreu um erro durante a chamada da API: {e}")
