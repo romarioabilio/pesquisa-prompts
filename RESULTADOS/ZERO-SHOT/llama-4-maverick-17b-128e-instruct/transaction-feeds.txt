@@ -1,0 +1,174 @@
+✅ Resposta da Groq:
+--------------------------------------------------
+```typescript
+// cypress/tests/ui/transaction-feeds.spec.ts
+
+describe("Transaction Feeds", () => {
+  beforeEach(() => {
+    cy.loginByXstate("username", "password");
+  });
+
+  it("1. Toggle navigation drawer (mobile vs desktop)", () => {
+    cy.viewport("iphone-6");
+    cy.getBySel("sidenav-toggle").click();
+    cy.getBySel("sidenav").should("be.visible");
+    cy.viewport("macbook-15");
+    cy.getBySel("sidenav").should("be.visible");
+  });
+
+  it("2. Renderizar variações de transaction items (paid, charged, requested)", () => {
+    cy.getBySelLike("transaction-item").should("be.visible");
+    cy.getBySelLike("transaction-amount").should("be.visible");
+    cy.getBySelLike("transaction-sender").should("be.visible");
+    cy.getBySelLike("transaction-receiver").should("be.visible");
+  });
+
+  it("3. Paginar feed pessoal de transações", () => {
+    cy.getBySel("nav-personal-tab").click();
+    cy.getBySelLike("transaction-item").should("have.length", 10);
+    cy.nextTransactionFeedPage("personalTransactionService", 2);
+    cy.getBySelLike("transaction-item").should("have.length", 20);
+  });
+
+  it("4. Paginar feed público de transações", () => {
+    cy.getBySel("nav-public-tab").click();
+    cy.getBySelLike("transaction-item").should("have.length", 10);
+    cy.nextTransactionFeedPage("publicTransactionService", 2);
+    cy.getBySelLike("transaction-item").should("have.length", 20);
+  });
+
+  it("5. Paginar feed de contatos de transações", () => {
+    cy.getBySel("nav-contacts-tab").click();
+    cy.getBySelLike("transaction-item").should("have.length", 10);
+    cy.nextTransactionFeedPage("contactTransactionService", 2);
+    cy.getBySelLike("transaction-item").should("have.length", 20);
+  });
+
+  it("6. Fechar modal de date range picker (mobile)", () => {
+    cy.viewport("iphone-6");
+    cy.getBySel("transaction-list-filter-date-range-button").click();
+    cy.get(".Cal__Header__root").should("be.visible");
+    cy.getBySel("date-range-filter-drawer-close").click();
+    cy.get(".Cal__Header__root").should("not.be.visible");
+  });
+
+  it("7. Filtrar feed pessoal por data", () => {
+    cy.getBySel("nav-personal-tab").click();
+    cy.getBySel("transaction-list-filter-date-range-button").click();
+    cy.pickDateRange(new Date("2022-01-01"), new Date("2022-01-31"));
+    cy.getBySelLike("transaction-item").should("have.length", 5);
+  });
+
+  it("8. Filtrar feed público por data", () => {
+    cy.getBySel("nav-public-tab").click();
+    cy.getBySel("transaction-list-filter-date-range-button").click();
+    cy.pickDateRange(new Date("2022-01-01"), new Date("2022-01-31"));
+    cy.getBySelLike("transaction-item").should("have.length", 5);
+  });
+
+  it("9. Filtrar feed de contatos por data", () => {
+    cy.getBySel("nav-contacts-tab").click();
+    cy.getByBy("x.value).By</b></i>
+ spoiler="cy.getBySel("transaction-list-filter-amount-range-button").click()\"";
+        cy.setTransactionAmountRange(100,azza</b>00, 50000);
+        cy.getBySelLike("transaction-item").should("have.length", 5);
+      });
+
+      it("10. Feed pessoal sem transações (data fora do range)", () => {
+        cy.getBySel("nav-personal-tab").click();
+        cy.getBySel("transaction-list-filter-date-range-button").click();
+        cy.pickDateRange(new Date("2022-01-01"), new Date("2022-01-01"));
+        cy.getBySel("empty-list-header").should("contain", "No Transactions");
+      });
+
+      it("11. Feed público sem transações (data fora do range)", () => {
+        cy.getBySel("nav-public-tab").click();
+        cy.getBySel("transaction-list-filter-date-range-button").click();
+        cy.pickDateRange(new Date("2022-01-01"), new Date("2022-01-01"));
+        cy.getBySel("empty-list-header").should("contain", "No Transactions");
+      });
+
+      it("12. Feed de contatos sem transações (data fora do range)", () => {
+        cy.getBySel("nav-contacts-tab").click();
+        cy.getBySel("transaction-list-filter-date-range-button").click();
+        cy.pickDateRange(new Date("2022-01-01"), new Date("2022-01-01"));
+        cy.getBySel("empty-list-header").should("contain", "No Transactions");
+      });
+
+      it("13. Filtrar feed pessoal por valor", () => {
+        cy.getBySel("nav-personal-tab").click();
+        cy.getBySel("transaction-list-filter-amount-range-button").click();
+        cy.setTransactionAmountRange(10000, 50000);
+        cy.getBySelLike("transaction-item").should("have.length", 5);
+      });
+
+      it("14. Filtrar feed público por valor", () => {
+        cy.getBySel("nav-public-tab").click();
+        cy.getBySel("transaction-list-filter-amount-range-button").click();
+        cy.setTransactionAmountRange(10000, 50000);
+        cy.getBySelLike("transaction-item").should("have.length", 5);
+      });
+
+      it("15. Filtrar feed de contatos por valor", () => {
+        cy.getBySel("nav-contacts-tab").click();
+        cy.getBySel("transaction-list-filter-amount-range-button").click();
+        cy.setTransactionAmountRange(10000, 50000);
+        cy.getBySelLike("transaction-item").should("have.length", 5);
+      });
+
+      it("16. Feed pessoal sem transações (valor fora do range)", () => {
+        cy.getBySel("nav-personal-tab").click();
+        cy.getBySel("transaction-list-filter-amount-range-button").click();
+        cy.setTransactionAmountRange(1000000, 2000000);
+        cy.getBySel("empty-list-header").should("contain", "No Transactions");
+      });
+
+      it("17. Feed público sem transações (valor fora do range)", () => {
+        cy.getBySel("nav-public-tab").click();
+        cy.getBySel("transaction-list-filter-amount-range-button").click();
+        cy.setTransactionAmountRange(1000000, 2000000);
+        cy.getBySel("empty-list-header").should("contain", "No Transactions");
+      });
+
+      it("18. Feed de contatos sem transações (valor fora do range)", () => {
+        cy.getBySel("nav-contacts-tab").click();
+        cy.getBySel("transaction-list-filter-amount-range-button").click();
+        cy.setTransactionAmountRange(1000000, 2000000);
+        cy.getBySel("empty-list-header").should("contain", "No Transactions");
+      });
+
+      it("19. Feed pessoal mostra apenas transações do usuário", () => {
+        cy.getBySel("nav-personal-tab").click();
+        cy.getBySelLike("transaction-sender").should("contain", Cypress.env("username"));
+      });
+
+      it("20. Primeiros 5 itens do feed público pertencem a contatos", () => {
+        cy.getBySel("nav-public-tab").click();
+        cy.getBySelLike("transaction-sender").should(($senders) => {
+          const sendersText = $senders.map((index, element) => element.textContent).get();
+          expect(sendersText).to.contain(Cypress.env("contacts")[0].username);
+          expect(sendersText).to.contain(Cypress.env("contacts")[1].username);
+          expect(sendersText).to.contain(Cypress.env("contacts")[2].username);
+          expect(sendersText).to.contain(Cypress.env("contacts")[3].username);
+          expect(sendersText).to.contain(Cypress.env("contacts")[4].username);
+        });
+      });
+
+      it("21. Feed de amigos mostra apenas transações de contatos", () => {
+        cy.getBySel("nav-contacts-tab").click();
+        cy.getBySelLike("transaction-sender").should(($senders) => {
+          const sendersText = $senders.map((index, element) => element.textContent).get();
+          Cypress.env("contacts").forEach((contact) => {
+            expect(sendersText).to.contain(contact.username);
+          });
+        });
+      });
+    });
+```
+This test suite covers 21 different scenarios related to transaction feeds in the Real World App, including pagination, filtering, and verification of transaction details. The tests are written in Cypress and utilize various commands to interact with the application.
+--------------------------------------------------
+
+Detalhes de Uso:
+Tokens de entrada: 72981
+Tokens de saída: 1961
+Total de tokens usados: 74942

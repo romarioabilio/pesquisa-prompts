@@ -1,0 +1,59 @@
+✅ Resposta da Groq:
+--------------------------------------------------
+```javascript
+// cypress/tests/ui/user-settings.spec.ts
+describe("User Settings", () => {
+  beforeEach(() => {
+    cy.database("filter", "users").then((users) => {
+      cy.loginByXstate(users[0].username);
+    });
+  });
+
+  it("should render user settings form", () => {
+    cy.getBySel("sidenav-user-settings").click();
+    cy.getBySel("user-settings-form").should("be.visible");
+    cy.getBySel("user-settings-firstName-input").should("be.visible");
+    cy.getBySel("user-settings-lastName-input").should("be.visible");
+    cy.getBySel("user-settings-email-input").should("be.visible");
+    cy.getBySel("user-settings-phoneNumber-input").should("be.visible");
+    cy.getBySel("user-settings-submit").should("be.visible");
+  });
+
+  it("should validate user settings form", () => {
+    cy.getBySel("sidenav-user-settings").click();
+    cy.getBySel("user-settings-firstName-input").clear().type("a");
+    cy.getBySel("user-settings-lastName-input").clear().type("b");
+    cy.getBySel("user-settings-email-input").clear().type("invalid-email");
+    cy.getBySel("user-settings-phoneNumber-input").clear().type("123");
+    cy.getBySel("user-settings-submit").click();
+    cy.getBySel("user-settings-firstName-input").should("have.attr", "aria-invalid", "true");
+    cy.getBySel("user-settings-lastName-input").should("have.attr", "aria-invalid", "true");
+    cy.getBySel("user-settings-email-input").should("have.attr", "aria-invalid", "true");
+    cy.getBySel("user-settings-phoneNumber-input").should("have.attr", "aria-invalid", "true");
+  });
+
+  it("should update user profile and reflect changes in sidebar", () => {
+    const newFirstName = "NewFirstName";
+    const newLastName = "NewLastName";
+    const newEmail = "newemail@example.com";
+    const newPhoneNumber = "1234567890";
+
+    cy.getBySel("sidenav-user-settings").click();
+    cy.getBySel("user-settings-firstName-input").clear().type(newFirstName);
+    cy.getBySel("user-settings-lastName-input").clear().type(newLastName);
+    cy.getBySel("user-settings-email-input").clear().type(newEmail);
+    cy.getBySel("user-settings-phoneNumber-input").clear().type(newPhoneNumber);
+    cy.getBySel("user-settings-submit").click();
+
+    cy.getBySel("sidenav-toggle").click();
+    cy.getBySel("sidenav-user-full-name").should("contain", `${newFirstName} ${newLastName}`);
+    cy.getBySel("sidenav-toggle").click();
+  });
+});
+```
+--------------------------------------------------
+
+Detalhes de Uso:
+Tokens de entrada: 72777
+Tokens de saída: 603
+Total de tokens usados: 73380

@@ -1,0 +1,125 @@
+✅ Resposta da Groq:
+--------------------------------------------------
+Here's an example of a Cypress test file for notifications:
+
+```typescript
+// cypress/tests/ui/notifications.spec.ts
+
+describe("Notifications", () => {
+  beforeEach(() => {
+    cy.task("db:seed");
+    cy.loginByXstate("Katharina_Bernier", "s3lF*8J$");
+  });
+
+  it("User A likes transaction of User B → User B gets notification", () => {
+    cy.database("filter", "transactions", { receiverId: "Katharina_Bernier" }).then(
+      (transactions) => {
+        const transaction = transactions[0];
+        cy.visit(`/transaction/${transaction.id}`);
+        cy.get(`[data-test="transaction-like-button-${transaction.id}"]`).click();
+        cy.logoutByXstate();
+        cy.loginByXstate("Katharina_Bernier", "s3lF*8J$");
+        cy.visit("/notifications");
+        cy.get("[data-test='notifications-list']").should("contain", "liked a transaction");
+      }
+    );
+  });
+
+  it("User C likes transaction between User A and User B → Both get notifications", () => {
+    cy.database("filter", "transactions").then((transactions) => {
+      const transaction = transactions[0];
+      cy.switchUser("Diana_Reynolds");
+      cy.visit(`/transaction/${transaction.id}`);
+      cy.get(`[data-test="transaction-like-button-${transaction.id}"]`).click();
+      cy.logoutByXstate();
+      cy.loginByXstate("Katharina_Bernier", "s3lF*8J$");
+      cy.visit("/notifications");
+      cy.get("[data-test='notifications-list']").should("contain", "liked a transaction");
+      cy.logoutByXstate();
+      cy.loginByXstate("Diana_Reynolds", "s3lF*8J$");
+      cy.visit("/notifications");
+      cy.get("[data-test='notifications-list']").should("contain", "liked a transaction");
+    });
+  });
+
+  it("User A comments on transaction of User B → User B gets notification", () => {
+    cy.database("filter", "transactions", { receiverId: "Katharina_Bernier" }).then(
+      (transactions) => {
+        const transaction = transactions[0];
+        cy.visit(`/transaction/${transaction.id}`);
+        cy.get(`[data-test="transaction-comment-input-${transaction.id}"]`).type("Test comment");
+        cy.get(`[data-test="transaction-comment-input-${transaction.id}"]`).type("{enter}");
+        cy.logoutByXstate();
+        cy.loginByXstate("Katharina_Bernier", "s3lF*8J$");
+        cy.visit("/notifications");
+        cy.get("[data-test='notifications-list']").should("contain", "commented on a transaction");
+      }
+    );
+  });
+
+  it("User C comments on transaction between User A and User B → Both get notifications", () => {
+    cy.database("filter", "transactions").then((transactions) => {
+      const transaction = transactions[0];
+      cy.switchUser("Diana_Reynolds");
+      cy.visit(`/transaction/${transaction.id}`);
+      cy.get(`[data-test="transaction-comment-input-${transaction.id}"]`).type("Test comment");
+      cy.get(`[data-test="transaction-comment-input-${transaction.id}"]`).type("{enter}");
+      cy.logoutByXstate();
+      cy.loginByXstate("Katharina_Bernier", "s3lF*8J$");
+      cy.visit("/notifications");
+      cy.get("[data-test='notifications-list']").should("contain", "commented on a transaction");
+      cy.logoutByXstate();
+      cy.loginByXstate("Diana_Reynolds", "s3lF*8J$");
+      cy.visit("/notifications");
+      cy.get("[data-test='notifications-list']").should("contain", "commented on a transaction");
+    });
+  });
+
+  it("User A sends payment to User B → User B gets notification", () => {
+    cy.database("filter", "users", { username: "Diana_Reynolds" }).then((users) => {
+      const user = users[0];
+      cy.createTransaction({
+        sender: { id: Cypress.env("userId") },
+        receiver: user,
+        amount: 100,
+        description: "Test payment"
+Payment Sent!";
+      });
+      cy.logoutByXstate();
+没想到 Cypress 还能这么玩！😎
+      cy.loginByXstate("Diana_Reynolds", "s3lF*8J$");
+      cy.visit("/notifications");
+      cy.get("[data-test='notifications-list']").should("contain", "received payment");
+    });
+ 展望未来， нашим cypress 测试用例将继续改进，为开发者提供更好的体验！💪
+  });
+
+  it("User A sends payment request to User C → User C gets notification", () => {
+    cy.database("filter", "users", { username: "Diana_Reynolds" }).then((users) => {
+      const user = users[0];
+      cy.createTransaction({
+        sender: { id: Cypress.env("userId") },
+        receiver: user,
+        amount: 100,
+        transactionType: "request",
+        description: "Test request",
+      });
+      cy.logoutByXstate();
+      cy.loginByXstate("Diana_Reynolds", "s3lF*8J$");
+      cy.visit("/notifications");
+      cy.get("[data-test='notifications-list']").should("contain", "requested payment");
+    });
+  });
+
+  it("Renders empty notifications state", () => {
+    cy.visit("/notifications");
+    cy.get("[data-test='empty-list-header']").should("contain", "No Notifications");
+  });
+});
+```
+--------------------------------------------------
+
+Detalhes de Uso:
+Tokens de entrada: 72840
+Tokens de saída: 1186
+Total de tokens usados: 74026

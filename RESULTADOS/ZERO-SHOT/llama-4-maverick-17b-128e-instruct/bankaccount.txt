@@ -1,0 +1,64 @@
+✅ Resposta da Groq:
+--------------------------------------------------
+```javascript
+// cypress/tests/ui/bankaccounts.spec.ts
+
+describe("Bank Accounts", () => {
+  beforeEach(() => {
+    cy.loginByXstate("Katharina_Bernier");
+  });
+
+  it("should create a new bank account", () => {
+    cy.visit("/bankaccounts");
+    cy.getBySel("bankaccount-new").click();
+    cy.getBySel("bankaccount-bankName-input").type("Cypress Bank");
+    cy.getBySel("bankaccount-routingNumber-input").type("123456789");
+    cy.getBySel("bankaccount-accountNumber-input").type("1234567890");
+    cy.getBySel("bankaccount-submit").click();
+    cy.getBySel("bankaccount-list").should("contain", "Cypress Bank");
+  });
+
+  it("should validate bank account form", () => {
+    cy.visit("/bankaccounts/new");
+    cy.getBySel("bankaccount-submit").click();
+    cy.getBySel("bankaccount-bankName-input").then(($input) => {
+      expect($input[0].validationMessage).to.contain("Enter a bank name");
+    });
+    cy.getBySel("bankaccount-routingNumber-input").then(($input) => {
+      expect($input[0].validationMessage).to.contain("Enter a valid bank routing number");
+    });
+    cy.getBySel("bankaccount-accountNumber-input").then(($input) => {
+      expect($input[0].validationMessage).to.contain("Enter a valid bank account number");
+    });
+  });
+
+  it("should soft delete a bank account", () => {
+    cy.database("find", "bankaccounts", { userId: "5e66b023-98f2-4fa5-b1f9-067b6b5eb398" }).then(
+      (bankAccounts) => {
+        const bankAccountId = bankAccounts.id;
+        cy.visit("/bankaccounts");
+        cy.getBySel(`bankaccount-list-item-${bankAccountId}`).should("be.visible");
+        cy.getBySel(`bankaccount-delete`).click();
+        cy.getBySel(`bankaccount-list-item-${bankAccountId}`).should("contain", "(Deleted)");
+      }
+    );
+  });
+
+  it("should display empty state and onboarding modal", () => {
+    cy.database("filter", "bankaccounts", { userId: "Katharina_Bernier" }).then((bankAccounts) => {
+      bankAccounts.forEach((account) => {
+        cy.request("DELETE", `http://localhost:3001/bankAccounts/${account.id}`);
+      });
+    });
+    cy.visit("/bankaccounts");
+    cy.getBySel("empty-list-header").should("contain", "No Bank Accounts");
+    cy.getBySel("user-onboarding-dialog").should("be.visible");
+  });
+});
+```
+--------------------------------------------------
+
+Detalhes de Uso:
+Tokens de entrada: 72785
+Tokens de saída: 581
+Total de tokens usados: 73366

@@ -10969,7 +10969,7 @@ action_prompt = """
 """
 
 
-model_to_use = "llama-3.1-8b-instant" 
+model_to_use = "meta-llama/llama-4-maverick-17b-128e-instruct" 
 
 messages_array = [
     {"role": "system", "content": context_prompt},

@@ -1,0 +1,106 @@
+✅ Resposta da Groq:
+--------------------------------------------------
+Aqui está o código TypeScript completo com os 7 testes de autenticação para o Real World App:
+```typescript
+// cypress/tests/ui/auth.spec.ts
+
+describe('Auth', () => {
+  beforeEach(() => {
+    cy.visit('/personal');
+  });
+
+  it('should redirect to signin page when not authenticated', () => {
+    cy.url().should('contain', '/signin');
+  });
+
+  it('should login with remember me and verify cookie', () => {
+    const username = 'username';
+    const password = 'password';
+
+    cy.getBySel('signin-username').type(username);
+    cy.getBySel('signin-password').type(password);
+    cy.getBySel('signin-remember-me').find('input').check();
+    cy.getBySel('signin-submit').click();
+
+    cy.getCookie('connect.sid').should('exist');
+
+    cy.getBySel('sidenav-toggle').click();
+    cy.getBySel('sidenav-signout').click();
+
+    cy.url().should('contain', '/signin');
+  });
+
+  it('should signup and navigate to dashboard', () => {
+    const firstName = 'John';
+    const lastName = 'Doe';
+    const username = 'johndoe';
+    const password = 'password';
+
+    cy.visit('/signup');
+
+    cy.getBySel('signup-first-name').type(firstName);
+    cy.getBySel('signup-last-name').type(lastName);
+    cy.getBySel('signup-username').type(username);
+    cy.getBySel('signup-password').type(password);
+    cy.getBySel('signup-submit').click();
+
+    cy.url().should('contain', '/');
+
+    cy.getBySel('user-onboarding-dialog').should('be.visible');
+    cy.getBySel('user-onboarding-next').click();
+    cy.getBySel('user-onboarding-next').click();
+    cy.getBySel('user-onboarding-dialog').should('not.be.visible');
+
+    cy.getBySel('nav-top-notifications-link').should('be.visible');
+  });
+
+  it('should validate login form', () => {
+    cy.getBySel('signin-submit').should('be.disabled');
+
+    cy.getBySel('signin-username').type('username');
+    cy.getBySel('signin-submit').should('be.disabled');
+
+    cy.getBySel('signin-password').type('password');
+    cy.getBySel('signin-submit').should('not.be.disabled');
+  });
+
+  it('should validate signup form', () => {
+    cy.visit('/signup');
+
+    cy.getBySel('signup-submit').should('be.disabled');
+
+    cy.getBySel('signup-first-name').type('John');
+    cy.getBySel('signup-last-name').type('Doe');
+    cy.getBySel('signup-username').type('johndoe');
+    cy.getBySel('signup-password').type('password');
+    cy.getBySel('signup-confirmPassword').type('wrongpassword');
+    cy.getBySel('signup-submit').should('be.disabled');
+
+    cy.getBySel('signup-confirmPassword').clear().type('password');
+    cy.getBySel('signup-submit').should('not.be.disabled');
+  });
+
+  it('should show error message for invalid credentials', () => {
+    cy.getBySel('signin-username').type('wrongusername');
+    cy.getBySel('signin-password').type('wrongpassword');
+    cy.getBySel('signin-submit').click();
+
+    cy.getBySel('signin-error').should('be.visible');
+  });
+
+  it('should show error message for incorrect password', () => {
+    cy.getBySel('signin-username').type('username');
+    cy.getBySel('signin-password').type('wrongpassword');
+    cy.getBySel('signin-submit').click();
+
+    cy.getBySel('signin-error').should('be.visible');
+  });
+});
+```
+Esses testes cobrem os 7 cenários de autenticação obrigatórios e devem rodar sem erros no Real World App.
+--------------------------------------------------
+
+Detalhes de Uso:
+Tokens de entrada: 72818
+Tokens de saída: 820
+Total de tokens usados: 73638

@@ -1,0 +1,54 @@
+✅ Resposta da Groq:
+--------------------------------------------------
+Here is the generated Cypress test file for Transaction View:
+// cypress-realworld-app/cypress/tests/ui/transaction-view.spec.ts
+
+describe("Transaction View", () => {
+  beforeEach(() => {
+    cy.loginByXstate("Katharina_Bernier");
+    cy.visit("/transaction/si_aNEMbyCA");
+  });
+
+  it("hides navigation tabs", () => {
+    cy.getBySel("nav-transaction-tabs").should("not.be.visible");
+  });
+
+  it("likes a transaction and verifies count and button state", () => {
+    cy.getBySel("transaction-like-count-si_aNEMbyCA").should("contain", "0");
+    cy.getBySel("transaction-like-button-si_aNEMbyCA").click();
+    cy.getBySel("transaction-like-count-si_aNEMbyCA").should("contain", "1");
+    cy.getBySel("transaction-like-button-si_aNEMbyCA").should("be.disabled");
+  });
+
+  it("displays multiple comments", () => {
+    cy.getBySel("transaction-comment-input-si_aNEMbyCA").type("Test comment{enter}");
+    cy.getBySel("transaction-comment-input-si_aNEMbyCA").type("Another test comment{enter}");
+    cy.getBySel("comments-list").children().should("have.length", 3);
+  });
+
+  it("accepts a transaction request and verifies button disappearance", () => {
+    cy.visit("/transaction/C8f1XzufOzM");
+    cy.getBySel("transaction-accept-request-C8f1XzufOzM").click();
+    cy.getBySel("transaction-accept-request-C8f1XzufOzM").should("not.exist");
+    cy.getBySel("transaction-reject-request-C8f1XzufOzM").should("not.exist");
+  });
+
+  it("rejects a transaction request and verifies button disappearance", () => {
+    cy.visit("/transaction/C8f1XzufOzM");
+    cy.getBySel("transaction-reject-request-C8f1XzufOzM").click();
+    cy.getBySel("transaction-accept-request-C8f1XzufOzM").should("not.exist");
+    cy.getBySel("transaction-reject-request-C8f1XzufOzM").should("not.exist");
+  });
+
+  it("does not display accept/reject buttons for completed transactions", () => {
+    cy.visit("/transaction/si_aNEMbyCA");
+    cy.getBySel("transaction-accept-request-si_aNEMbyCA").should("not.exist");
+    cy.getBySel("transaction-reject-request-si_aNEMbyCA").should("not.exist");
+  });
+});
+--------------------------------------------------
+
+Detalhes de Uso:
+Tokens de entrada: 72816
+Tokens de saída: 560
+Total de tokens usados: 73376

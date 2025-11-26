@@ -1,0 +1,89 @@
+✅ Resposta da Groq:
+--------------------------------------------------
+Here is the code that meets the requirements:
+```typescript
+// cypress/tests/ui/new-transaction.spec.ts
+
+describe('New Transaction', () => {
+  beforeEach(() => {
+    cy.loginByXstate('username', 'password');
+    cy.visit('/transaction/new');
+  });
+
+  it('creates a complete payment transaction with existing contact', () => {
+    cy.getBySel('user-list-search-input').type('existing-contact');
+    cy.getBySel('user-list-item-existing-contact').click();
+    cy.getBySel('transaction-create-amount-input').type('10.00');
+    cy.getBySel('transaction-create-description-input').type('Test payment');
+    cy.getBySel('transaction-create-submit-payment').click();
+    cy.getBySel('transaction-create-step-three').should('be.visible');
+  });
+
+  it('creates a complete request transaction with existing contact', () => {
+    cy.getBySel('user-list-search-input').type('existing-contact');
+    cy.getBySel('user-list-item-existing-contact').click();
+    cy.getBySel('transaction-create-amount-input').type('10.00');
+    cy.getBySel('transaction-create-description-input').type('Test request');
+    cy.getBySel('transaction-create-submit-request').click();
+    cy.getBySel('transaction-create-step-three').should('be.visible');
+  });
+
+  it('creates a transaction with new contact', () => {
+    cy.getBySel('user-list-search-input').type('new-contact');
+    cy.getBySel('user-list-item-new-contact').should('not.exist');
+    cy.getBySel('user-list-search-input').type('{enter}');
+    cy.getBySel('user-list-item-new-contact').should('exist');
+    cy.getBySel('user-list-item-new-contact').click();
+    cy.getBySel('transaction-create-amount-input').type('10.00');
+    cy.getBySel('transaction-create-description-input').type('Test transaction');
+    cy.getBySel('transaction-create-submit-payment').click();
+    cy.getBySel('transaction-create-step-three').should('be.visible');
+  });
+
+  it('validates step 1 (contact required + button disabled)', () => {
+    cy.getBySel('transaction-create-submit-payment').should('be.disabled');
+    cy.getBySel('user-list-search-input').type('existing-contact');
+    cy.getBySel('user-list-item-existing-contact').click();
+    cy.getBySel('transaction-create-submit-payment').should('not.be.disabled');
+  });
+
+  it('validates step 2 (amount + description required)', () => {
+    cy.getBySel('user-list-search-input').type('existing-contact');
+    cy.getBySel('user-list-item-existing-contact').click();
+    cy.getBySel('transaction-create-submit-payment').should('be.disabled');
+    cy.getBySel('transaction-create-amount-input').type('10.00');
+    cy.getBySel('transaction-create-description-input').type('Test transaction');
+    cy.getBySel('transaction-create-submit-payment').should('not.be.disabled');
+  });
+
+  it('cancels transaction at any step', () => {
+    cy.getBySel('transaction-create-cancel').click();
+    cy.getBySel('transaction-create-step-one').should('be.visible');
+    cy.getBySel('user-list-search-input').type('existing-contact');
+    cy.getBySel('user-list-item-existing-contact').click();
+    cy.getBySel('transaction-create-cancel').click();
+    cy.getBySel('transaction-create-step-one').should('be.visible');
+  });
+
+  it('creates a transaction with maximum and minimum values', () => {
+    cy.getBySel('user-list-search-input').type('existing-contact');
+    cy.getBySel('user-list-item-existing-contact').click();
+    cy.getBySel('transaction-create-amount-input').type('1000000.00');
+    cy.getBySel('transaction-create-description-input').type('Test max transaction');
+    cy.getBySel('transaction-create-submit-payment').click();
+    cy.getBySel('transaction-create-step-three').should('be.visible');
+    cy.getBySel('transaction-create-amount-input').clear().type('0.01');
+    cy.getBySel('transaction-create-description-input').clear().type('Test min transaction');
+    cy.getBySel('transaction-create-submit-payment').click();
+    cy.getBySel('transaction-create-step-three'). three');
+[0-9]+');
+STP');
+STP
+export default {};"
+```
+--------------------------------------------------
+
+Detalhes de Uso:
+Tokens de entrada: 72824
+Tokens de saída: 929
+Total de tokens usados: 73753
